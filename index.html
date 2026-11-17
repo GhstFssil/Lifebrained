@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lifebrained</title>
+<meta name="theme-color" content="#0D6E65">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lifebrained">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="lb-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="lb-icon-180.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div class="app">
+  <header>
+    <div><h1 id="h-title"></h1><p class="hsub" id="h-sub"></p></div>
+    <div class="hright"><button class="hb" data-act="organize">Settings</button><p class="status" id="status" aria-live="polite"></p></div>
+  </header>
+  <div class="od" id="overdue"></div>
+  <div class="ib" id="incbar"></div>
+  <div class="nowbar" id="nowbar"></div>
+  <div id="banner"></div>
+  <main id="view"></main>
+</div>
+
+<button class="fab" data-act="add" aria-label="Add something">+</button>
+<div class="selbar" id="selbar" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+<nav class="tabs" aria-label="Sections"><div id="tabs"></div></nav>
+<div class="scrim" data-act="closeSheet" id="scrim" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Add" hidden></section>
+<div class="scrim" id="mscrim" hidden></div>
+<section class="modal" id="modal" role="alertdialog" aria-modal="true" aria-labelledby="m-title" hidden></section>
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
+</body></html>

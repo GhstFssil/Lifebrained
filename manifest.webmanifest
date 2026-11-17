@@ -1,0 +1,17 @@
+{
+  "name": "Lifebrained",
+  "short_name": "Lifebrained",
+  "description": "To dos, money, bills and a calendar in one place, so your brain does not have to hold it all.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F4F1",
+  "theme_color": "#0D6E65",
+  "icons": [
+    { "src": "lb-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "lb-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "lb-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "lb-icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
