@@ -5,7 +5,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 
 ## Done
 - Shipped 0.1 to 0.4 (0.4 = Supabase accounts, sync, cloud backups).
-- Repo GhstFssil/Lifebrained created (private); 0.4 imported to `main`, tagged `v0.4`.
+- Repo GhstFssil/Lifebrained created (private); 0.4 imported to `main` (commit e7a2b4c). Tag `v0.4` could not be pushed (403); create it on GitHub as a release or tag.
 - CLAUDE.md, ARCHITECTURE.md, BACKLOG.md added.
 
 ## In progress
