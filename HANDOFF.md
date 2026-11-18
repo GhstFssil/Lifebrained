@@ -14,6 +14,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 ## Decisions
 - Repo is private. Supabase "Confirm email" is off. Initial import went straight to `main`.
 - Ship (bump version, tag) only when Ricky asks.
+- Netlify auto publishing is stopped: pushes to `main` build but go live only when Ricky presses Publish deploy. May move to a `release` production branch later.
 
 ## Next steps
 1. Ricky: open the app once online so the 0.5 service worker installs; check the LB icon and an edit on each of events, money, regular events.
