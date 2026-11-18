@@ -1,5 +1,5 @@
 // Offline-first service worker for the app's own files. Bump CACHE when you ship changes.
-const CACHE = 'lifebrained-v0.4';
+const CACHE = 'lifebrained-v0.5';
 const ASSETS = ['./', './index.html', './app.js', './style.css', './manifest.webmanifest', './config.js', './vendor/supabase.js', './lb-icon.svg', './lb-icon-180.png', './lb-icon-192.png', './lb-icon-512.png', './lb-icon-maskable-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => {

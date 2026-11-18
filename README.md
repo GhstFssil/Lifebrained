@@ -9,7 +9,7 @@ Drag this folder's contents (or the zip) onto Netlify's deploy area. Nothing els
 Everything is saved in the browser's localStorage on the device you use, so each device or browser keeps its own copy. Without an account, data stays on that device only; Settings › Backup file saves and restores a backup file. With an account (below), data syncs to Supabase and a copy is saved there every day. First launch shows example entries; "Clear them" removes them.
 
 ## Updating
-Version: 0.4 (`APP_VERSION` in `app.js`). Bump `CACHE` in `sw.js` (currently `lifebrained-v0.4`) whenever you ship changes, or installed copies may keep showing the old files. Deploy to the same Netlify site each time: saved data belongs to the site's address.
+Version: 0.5 (`APP_VERSION` in `app.js`). Bump `CACHE` in `sw.js` (currently `lifebrained-v0.5`) whenever you ship changes, or installed copies may keep showing the old files. Deploy to the same Netlify site each time: saved data belongs to the site's address.
 
 ## Files
 `index.html`, `app.js`, `style.css`, `sw.js`, `manifest.webmanifest`, and the `lb-icon-*` icons. The icons have new file names in 0.3 so iPhone picks up the LB icon when the app is added to the home screen again; iPhone never updates the icon of an app that is already on the home screen.
