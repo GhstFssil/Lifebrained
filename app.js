@@ -663,7 +663,7 @@ function itemRow(it,ds){
     ?'<button class="x" data-act="delEvent" data-id="'+it.id+'" aria-label="Delete '+esc(it.title)+'">×</button>'
     :'<button class="tb sm" data-act="skip" data-id="'+it.id+'" data-date="'+ds+'" aria-label="'+(it.skipped?'Unskip ':'Skip ')+esc(it.title)+' on '+esc(short(ds))+'">'+(it.skipped?'Unskip':'Skip')+'</button>';
   var tag=it.kind==='routine'?'<span class="tag rep">Regular</span>':it.multi?'<span class="tag">Day '+it.multi.i+' of '+it.multi.n+'</span>':'';
-  return '<li class="row'+(it.skipped?' done':'')+'"><div class="time">'+itemTime(it)+'</div><div class="grow"><div class="ttl">'+esc(it.title)+tag+'</div>'+(it.skipped?'<div class="sub">Skipped</div>':'')+'</div>'+act+'</li>';
+  return '<li class="row'+(it.skipped?' done':'')+'"><div class="time">'+itemTime(it)+'</div><div class="grow"><div class="ttl">'+(it.kind==='event'?'<button class="tbtn" data-act="editEvent" data-id="'+it.id+'" aria-label="Edit '+esc(it.title)+'">'+esc(it.title)+'</button>':esc(it.title))+tag+'</div>'+(it.skipped?'<div class="sub">Skipped</div>':'')+'</div>'+act+'</li>';
 }
 function routineRow(r){
   return '<li class="row"><div class="grow"><div class="ttl">'+esc(r.title)+'</div><div class="sub">'+r.days.slice().sort().map(function(d){return DN[d]}).join(', ')+' · '+esc(fmtTime(r.start))+' to '+esc(fmtTime(r.end))+'</div></div>'+
@@ -1421,7 +1421,7 @@ function renderSheet(){
   if(k==='restore'){$('#sheet').innerHTML=h+restoreHTML()+'</div>';return}
   if(k==='cloudbk'){$('#sheet').innerHTML=h+cloudHTML()+'</div>';return}
   var editing=!!sheet.id;
-  var titles={task:editing?'Edit to do':(sheet.pre&&sheet.pre.parentId&&!sheet.pre.title?'New subtask':sheet.pre?'Do again':'New to do'),spend:sheet.plannedId?'Record planned expense':sheet.type==='in'?'New income':sheet.type==='xfer'?'Transfer':'New expense',bill:editing?'Edit bill':'New monthly bill',event:'New event',routine:'New regular event',plan:'Day plan',est:'Time estimate',income:editing?'Edit expected income':'Recurring income',
+  var titles={task:editing?'Edit to do':(sheet.pre&&sheet.pre.parentId&&!sheet.pre.title?'New subtask':sheet.pre?'Do again':'New to do'),spend:sheet.plannedId?'Record planned expense':sheet.type==='in'?'New income':sheet.type==='xfer'?'Transfer':'New expense',bill:editing?'Edit bill':'New monthly bill',event:editing?'Edit event':'New event',routine:'New regular event',plan:'Day plan',est:'Time estimate',income:editing?'Edit expected income':'Recurring income',
     cat:editing?'Edit category':'New category',proj:editing?'Edit project':'New project',acct:editing?'Edit account':'New account',planned:editing?'Edit planned purchase':'New planned purchase',debt:editing?'Edit debt':'New debt',debtpay:'Log a payment',goal:editing?'Edit goal':'New goal',goaladd:'Add money to goal',time:'Edit time entry',filter:'Filter to dos',bulk:'Edit selected to dos',billpay:'Mark bill paid',sbcfg:'Set up accounts',signin:sheet.mode==='up'?'Create account':'Sign in',newpass:'Set a new password'};
   h+='<h3>'+titles[k]+'</h3>';
   if(!NOCHIPS[k]&&!editing&&!sheet.pre&&!sheet.plannedId){
@@ -1489,10 +1489,12 @@ function renderSheet(){
     h+=field('Paid from','<select id="f-acct" name="acct">'+acctOptions(acctOf(bp.acct)?bp.acct:defAcct())+'</select>');
     submit='Mark paid';
   }else if(k==='event'){
-    h+=field('Title','<input id="f-title" name="title" autocomplete="off" required>');
-    h+='<div class="two-f">'+field('Starts on','<input id="f-date" name="date" type="date" value="'+sheet.date+'">')+'<div id="g-enddate" hidden>'+field('Ends on','<input id="f-enddate" name="enddate" type="date" value="'+addDays(sheet.date,1)+'">')+'</div></div>';
-    h+='<label class="chkrow"><input type="checkbox" id="f-multi" name="multi"> Lasts more than one day</label>';
-    h+='<label class="chkrow"><input type="checkbox" id="f-allday" name="allday"> All day</label><div class="two-f" id="tfields">'+field('Start time','<input id="f-time" name="time" type="time" value="09:00">')+field('End time','<input id="f-end" name="end" type="time" value="10:00">')+'</div>';
+    var ee=editing?byId(state.events,sheet.id):null,eMulti=!!(ee&&ee.endDate&&ee.endDate>ee.date),eAll=!!(ee&&ee.allDay);
+    h+=field('Title','<input id="f-title" name="title" autocomplete="off" required value="'+esc(ee?ee.title:'')+'">');
+    h+='<div class="two-f">'+field('Starts on','<input id="f-date" name="date" type="date" value="'+sheet.date+'">')+'<div id="g-enddate"'+(eMulti?'':' hidden')+'>'+field('Ends on','<input id="f-enddate" name="enddate" type="date" value="'+(eMulti?ee.endDate:addDays(sheet.date,1))+'">')+'</div></div>';
+    h+='<label class="chkrow"><input type="checkbox" id="f-multi" name="multi"'+(eMulti?' checked':'')+'> Lasts more than one day</label>';
+    h+='<label class="chkrow"><input type="checkbox" id="f-allday" name="allday"'+(eAll?' checked':'')+'> All day</label><div class="two-f" id="tfields"'+(eAll?' hidden':'')+'>'+field('Start time','<input id="f-time" name="time" type="time" value="'+((ee&&!eAll&&ee.time)||'09:00')+'">')+field('End time','<input id="f-end" name="end" type="time" value="'+((ee&&!eAll&&ee.end)||'10:00')+'">')+'</div>';
+    if(editing)extra='<button type="button" class="btn ghost" data-act="sheetDel">Delete</button>';
   }else if(k==='routine'){
     h+=field('Name','<input id="f-title" name="title" autocomplete="off" placeholder="Work, Biology class" required>');
     h+='<div class="field"><span>Repeats every</span><div class="chips" id="wdays">'+DN.map(function(n,i){return '<button type="button" class="chip" data-act="wday" data-d="'+i+'" aria-pressed="'+(sheet.days.indexOf(i)>=0)+'">'+n+'</button>'}).join('')+'</div></div>';
@@ -1695,7 +1697,9 @@ function submitSheet(f){
     }
     var ev={id:uid(),title:v('title'),date:v('date'),allDay:allDay,time:allDay?'':v('time'),end:allDay?'':v('end')};
     if(ed)ev.endDate=ed;
-    state.events.push(ev);
+    var oldEv=editing?byId(state.events,sheet.id):null;
+    if(oldEv){snapUndo();ev.id=oldEv.id;Object.keys(oldEv).forEach(function(key){delete oldEv[key]});Object.assign(oldEv,ev);toast='Event updated';undoable=true}
+    else state.events.push(ev);
     if(tab==='calendar'){var p=v('date').split('-').map(Number);calY=p[0];calM=p[1]-1;calSel=v('date')}
   }else if(k==='routine'){
     if(!v('title'))return err('Give it a name.');
@@ -1847,6 +1851,7 @@ function deleteFromSheet(){
     snapUndo();state.tasks=state.tasks.filter(function(x){return x.id!==id&&x.parentId!==id});
     msg='To do deleted'+(kids.length?' with its '+kids.length+' subtask'+(kids.length===1?'':'s'):'');
   }
+  else if(k==='event'){snapUndo();state.events=state.events.filter(function(x){return x.id!==id});msg='Event deleted'}
   else if(k==='planned'){snapUndo();state.planned=state.planned.filter(function(x){return x.id!==id});msg='Planned purchase deleted'}
   else if(k==='time'){snapUndo();state.times=state.times.filter(function(x){return x.id!==id});msg='Time entry deleted'}
   else if(k==='bill'){snapUndo();state.bills=state.bills.filter(function(x){return x.id!==id});msg='Bill deleted. Its past payments stay in your activity'}
@@ -1913,6 +1918,7 @@ document.addEventListener('click',function(e){
   if(a==='editPlanned'){openSheet('planned',{id:id});return}
   if(a==='spendPlanned'){openSheet('spend',{type:'out',plannedId:id});return}
   if(a==='editBill'){openSheet('bill',{id:id});return}
+  if(a==='editEvent'){var ev0=byId(state.events,id);if(ev0)openSheet('event',{id:id,date:ev0.date});return}
   if(a==='editInc'){var inc0=byId(state.incomes,id);if(inc0)openSheet('income',{id:id,mdays:(inc0.mdays||[]).slice()});return}
   if(a==='editTime'){openSheet('time',{id:id});return}
   if(a==='editTask'){
