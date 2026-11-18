@@ -9,7 +9,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - CLAUDE.md, ARCHITECTURE.md, BACKLOG.md added.
 
 ## In progress
-- Netlify and Supabase linked; SQL run; keys in config.js. Next: iPhone redeploy and first sign-in.
+- Netlify and Supabase linked; SQL run; keys in config.js; site made public, LB icon serves. Next: iPhone re-add and first sign-in.
 
 ## Decisions
 - Repo is private. Supabase "Confirm email" is off. Initial import went straight to `main`.
@@ -26,4 +26,5 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - Sync has only been tested against a mock server.
 - Version is still 0.4 in `app.js`, `sw.js`, README; bump to 0.5 with the first new change.
 - iPhone never updates the icon of an app already on the home screen.
+- Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.
 - Password-reset emails open in Safari, not the home-screen app.
