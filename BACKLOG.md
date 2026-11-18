@@ -6,6 +6,7 @@ Format: `- [ ] (who, YYYY-MM-DD) short description; where/how to reproduce`
 _none logged yet_
 
 ## Ideas
+- [ ] Supertasks show as one block in the schedule, with each subtask detailed in the popup when it's selected.
 
 ## Watch (untested)
 - [ ] (handoff, 2026-11-17) Conflict prompt behaves correctly across two devices
