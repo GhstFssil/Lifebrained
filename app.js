@@ -1007,7 +1007,7 @@ function txRow(t){
   if(t.projId&&projOf(t.projId))parts.push(projPath(t.projId));
   parts.push(dateY(t.date));
   var title=t.note||(xf?'Transfer':inc?'Income':catName(t.catId)||'Expense');
-  return '<li class="row"><div class="grow"><div class="ttl">'+esc(title)+'</div><div class="sub">'+esc(parts.join(' · '))+'</div></div>'+
+  return '<li class="row"><div class="grow"><div class="ttl"><button class="tbtn" data-act="editTx" data-id="'+t.id+'" aria-label="Edit '+esc(title)+'">'+esc(title)+'</button></div><div class="sub">'+esc(parts.join(' · '))+'</div></div>'+
     '<div class="amt num'+(inc?' in':xf?' xf':'')+'">'+(inc?'+':'')+money(t.amount)+'</div>'+
     '<button class="x" data-act="delTx" data-id="'+t.id+'" aria-label="Delete '+esc(title)+'">×</button></li>';
 }
@@ -1421,7 +1421,7 @@ function renderSheet(){
   if(k==='restore'){$('#sheet').innerHTML=h+restoreHTML()+'</div>';return}
   if(k==='cloudbk'){$('#sheet').innerHTML=h+cloudHTML()+'</div>';return}
   var editing=!!sheet.id;
-  var titles={task:editing?'Edit to do':(sheet.pre&&sheet.pre.parentId&&!sheet.pre.title?'New subtask':sheet.pre?'Do again':'New to do'),spend:sheet.plannedId?'Record planned expense':sheet.type==='in'?'New income':sheet.type==='xfer'?'Transfer':'New expense',bill:editing?'Edit bill':'New monthly bill',event:editing?'Edit event':'New event',routine:'New regular event',plan:'Day plan',est:'Time estimate',income:editing?'Edit expected income':'Recurring income',
+  var titles={task:editing?'Edit to do':(sheet.pre&&sheet.pre.parentId&&!sheet.pre.title?'New subtask':sheet.pre?'Do again':'New to do'),spend:editing?'Edit entry':sheet.plannedId?'Record planned expense':sheet.type==='in'?'New income':sheet.type==='xfer'?'Transfer':'New expense',bill:editing?'Edit bill':'New monthly bill',event:editing?'Edit event':'New event',routine:'New regular event',plan:'Day plan',est:'Time estimate',income:editing?'Edit expected income':'Recurring income',
     cat:editing?'Edit category':'New category',proj:editing?'Edit project':'New project',acct:editing?'Edit account':'New account',planned:editing?'Edit planned purchase':'New planned purchase',debt:editing?'Edit debt':'New debt',debtpay:'Log a payment',goal:editing?'Edit goal':'New goal',goaladd:'Add money to goal',time:'Edit time entry',filter:'Filter to dos',bulk:'Edit selected to dos',billpay:'Mark bill paid',sbcfg:'Set up accounts',signin:sheet.mode==='up'?'Create account':'Sign in',newpass:'Set a new password'};
   h+='<h3>'+titles[k]+'</h3>';
   if(!NOCHIPS[k]&&!editing&&!sheet.pre&&!sheet.plannedId){
@@ -1456,19 +1456,19 @@ function renderSheet(){
       if(!et.parentId&&!et.done)h+='<p class="help"><button type="button" class="lnk" data-act="addSub" data-id="'+et.id+'">+ Add a subtask to this</button></p>';
     }
   }else if(k==='spend'){
-    var pl=sheet.plannedId?byId(state.planned,sheet.plannedId):null,ty=sheet.type;
-    if(!pl)h+='<div class="seg" role="group" aria-label="Type"><button type="button" data-act="stype" data-type="out" aria-pressed="'+(ty==='out')+'">Expense</button><button type="button" data-act="stype" data-type="in" aria-pressed="'+(ty==='in')+'">Income</button><button type="button" data-act="stype" data-type="xfer" aria-pressed="'+(ty==='xfer')+'">Transfer</button></div>';
-    h+='<div class="two-f">'+field('Amount',moneyInput('amount',pl?pl.amount:''))+field('Date','<input id="f-date" name="date" type="date" value="'+todayStr()+'">')+'</div>';
+    var pl=sheet.plannedId?byId(state.planned,sheet.plannedId):null,ty=sheet.type,et=editing?byId(state.txns,sheet.id):null;
+    if(!pl&&!editing)h+='<div class="seg" role="group" aria-label="Type"><button type="button" data-act="stype" data-type="out" aria-pressed="'+(ty==='out')+'">Expense</button><button type="button" data-act="stype" data-type="in" aria-pressed="'+(ty==='in')+'">Income</button><button type="button" data-act="stype" data-type="xfer" aria-pressed="'+(ty==='xfer')+'">Transfer</button></div>';
+    h+='<div class="two-f">'+field('Amount',moneyInput('amount',pl?pl.amount:(et?et.amount:'')))+field('Date','<input id="f-date" name="date" type="date" value="'+(et?et.date:todayStr())+'">')+'</div>';
     if(ty==='xfer'){
       var accs=state.accounts,second=accs.length>1?(accs[0].id===defAcct()?accs[1].id:accs[0].id):defAcct();
-      h+='<div class="two-f">'+field('From','<select id="f-acct" name="acct">'+acctOptions(defAcct())+'</select>')+field('To','<select id="f-to" name="to">'+acctOptions(second)+'</select>')+'</div>';
+      h+='<div class="two-f">'+field('From','<select id="f-acct" name="acct">'+acctOptions(et?et.acct:defAcct())+'</select>')+field('To','<select id="f-to" name="to">'+acctOptions(et?et.toAcct:second)+'</select>')+'</div>';
       if(accs.length<2)h+='<p class="sub help">Add a second account on Money › Accounts to move money between them.</p>';
     }else{
-      if(ty==='out')h+='<div class="two-f">'+field('Category','<select id="f-cat" name="cat">'+catOptions(pl?pl.catId:'')+'</select>')+field('Project','<select id="f-proj" name="proj">'+projOptions(pl?pl.projId:'')+'</select>')+'</div>';
-      h+=field(ty==='in'?'Into account':'Paid from','<select id="f-acct" name="acct">'+acctOptions(defAcct())+'</select>');
-      if(ty==='in')h+=field('Project (optional)','<select id="f-proj" name="proj">'+projOptions('')+'</select>');
+      if(ty==='out')h+='<div class="two-f">'+field('Category','<select id="f-cat" name="cat">'+catOptions(pl?pl.catId:(et?et.catId:''))+'</select>')+field('Project','<select id="f-proj" name="proj">'+projOptions(pl?pl.projId:(et?et.projId:''))+'</select>')+'</div>';
+      h+=field(ty==='in'?'Into account':'Paid from','<select id="f-acct" name="acct">'+acctOptions(et?et.acct:defAcct())+'</select>');
+      if(ty==='in')h+=field('Project (optional)','<select id="f-proj" name="proj">'+projOptions(et?et.projId:'')+'</select>');
     }
-    h+=field('Note (optional)','<input id="f-note" name="note" autocomplete="off" value="'+esc(pl?pl.name:'')+'" placeholder="'+(ty==='in'?'Paycheck':ty==='xfer'?'To savings':'Groceries')+'">');
+    h+=field('Note (optional)','<input id="f-note" name="note" autocomplete="off" value="'+esc(pl?pl.name:(et?et.note:''))+'" placeholder="'+(ty==='in'?'Paycheck':ty==='xfer'?'To savings':'Groceries')+'">');
   }else if(k==='planned'){
     var pp=editing?byId(state.planned,sheet.id):{};
     h+=field('What is it','<input id="f-name" name="name" autocomplete="off" required value="'+esc(pp.name||'')+'" placeholder="Winter boots">');
@@ -1650,16 +1650,20 @@ function submitSheet(f){
       if(par){var pp2=byId(state.tasks,par);if(pp2&&pp2.done)reopenTask(pp2);ui.open['st:'+par]=true;saveUI()}
     }
   }else if(k==='spend'){
-    var a=num(v('amount')),ty=sheet.type;
+    var a=num(v('amount')),ty=sheet.type,oldTx=editing?byId(state.txns,sheet.id):null;
     if(!(a>0))return err('Enter an amount above zero.');
+    if(oldTx){snapUndo();toast='Entry updated';undoable=true}
     if(ty==='xfer'){
       if(v('acct')===v('to'))return err('Pick two different accounts.');
-      addTx({type:'xfer',date:v('date')||todayStr(),amount:a,acct:v('acct'),toAcct:v('to'),note:v('note')});
+      if(oldTx)Object.assign(oldTx,{date:v('date')||oldTx.date,amount:r2(a),acct:v('acct'),toAcct:v('to'),note:v('note')});
+      else addTx({type:'xfer',date:v('date')||todayStr(),amount:a,acct:v('acct'),toAcct:v('to'),note:v('note')});
+    }else if(oldTx){
+      Object.assign(oldTx,{date:v('date')||oldTx.date,amount:r2(a),acct:v('acct')||oldTx.acct,catId:ty==='out'?v('cat')||null:null,projId:v('proj')||null,note:v('note')});
     }else{
       addTx({type:ty,date:v('date')||todayStr(),amount:a,acct:v('acct')||defAcct(),catId:ty==='out'?v('cat')||null:null,projId:v('proj')||null,note:v('note')});
       if(sheet.plannedId){state.planned=state.planned.filter(function(p){return p.id!==sheet.plannedId});toast='Recorded as spent'}
     }
-    tab='money';if(ui.msub==='plans'&&!sheet.plannedId)ui.msub='overview';
+    if(!editing){tab='money';if(ui.msub==='plans'&&!sheet.plannedId)ui.msub='overview'}
   }else if(k==='planned'){
     var pa=num(v('amount'));
     if(!v('name'))return err('Name the purchase.');
@@ -1918,6 +1922,7 @@ document.addEventListener('click',function(e){
   if(a==='editPlanned'){openSheet('planned',{id:id});return}
   if(a==='spendPlanned'){openSheet('spend',{type:'out',plannedId:id});return}
   if(a==='editBill'){openSheet('bill',{id:id});return}
+  if(a==='editTx'){var tx0=byId(state.txns,id);if(tx0)openSheet('spend',{id:id,type:tx0.type,date:tx0.date});return}
   if(a==='editEvent'){var ev0=byId(state.events,id);if(ev0)openSheet('event',{id:id,date:ev0.date});return}
   if(a==='editInc'){var inc0=byId(state.incomes,id);if(inc0)openSheet('income',{id:id,mdays:(inc0.mdays||[]).slice()});return}
   if(a==='editTime'){openSheet('time',{id:id});return}
