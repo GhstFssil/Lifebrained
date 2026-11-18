@@ -9,7 +9,7 @@
 - `sw.js`: network-first service worker for the app's own files; `CACHE` name changes each version.
 - `config.js`: `window.LB_CONFIG` with Supabase URL and publishable key.
 - `supabase-setup.sql`: tables, row-level security, grants (safe to re-run).
-- `vendor/supabase.js`: supabase-js 2.45.4 browser build (MIT). `vendor/591.supabase.js` is an unreferenced `ws` stub.
+- `vendor/supabase.js`: supabase-js 2.45.4 browser build (MIT). `vendor/591.supabase.js` is a lazy chunk that `supabase.js` loads by name (a `ws` stub for runtimes without WebSocket); keep it next to `supabase.js`.
 - `lb-icon-*`: pink "LB" on deep teal. Names changed in 0.3 so iPhone picks up the icon on re-add.
 
 ## Data
