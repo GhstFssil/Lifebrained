@@ -4,6 +4,6 @@
 // The publishable key is safe to include: the database rules in supabase-setup.sql keep each person's data private.
 // Never put the secret or service_role key here.
 window.LB_CONFIG = {
-  supabaseUrl: '',
-  supabaseKey: ''
+  supabaseUrl: 'https://dngwnqnrqbhmwqwdvrkk.supabase.co',
+  supabaseKey: 'sb_publishable_wOcs6lNM_5Joi3jvq3IJlA_Jw5pHYZu'
 };
