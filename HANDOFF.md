@@ -9,6 +9,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - CLAUDE.md, ARCHITECTURE.md, BACKLOG.md added.
 
 ## In progress
+- Branch `edit-entries` (tested at 390px light+dark): edit events, money entries, regular events. Not merged; version still 0.4. Merge to `main` deploys.
 - Netlify and Supabase linked; SQL run; keys in config.js; site made public, LB icon serves. Next: iPhone re-add and first sign-in.
 
 ## Decisions
