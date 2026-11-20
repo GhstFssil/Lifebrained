@@ -27,7 +27,7 @@ Free Supabase projects can be paused after a stretch of no use. The app keeps wo
 The Supabase JavaScript library (MIT license) is included in `vendor/` so the app works offline.
 
 ## Updating
-Version: 0.5 (`APP_VERSION` in `app.js`). Cache: `lifebrained-v0.5` (`CACHE` in `sw.js`). Bump both whenever you ship changes, or installed copies may keep showing the old files. Deploy to the same Netlify site each time: saved data belongs to the site's address.
+The version is `APP_VERSION` in `app.js` and the cache name is `CACHE` in `sw.js`. Bump both whenever you ship changes, or installed copies may keep showing the old files. Deploy to the same Netlify site each time: saved data belongs to the site's address.
 
 ## Files
 See `ARCHITECTURE.md` for what each file does. The `lb-icon-*` icons have new file names since 0.3 so iPhone picks up the LB icon when the app is added to the home screen again; iPhone never updates the icon of an app that is already on the home screen.

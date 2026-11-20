@@ -25,7 +25,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 
 ## Gotchas
 - Real Supabase sign-in, sync and backup restore verified; the two-device conflict prompt is untested.
-- Version is 0.5; bump `APP_VERSION`, `CACHE`, README on the next release.
+- Version is 0.5; bump `APP_VERSION` and `CACHE` on the next release.
 - iPhone never updates the icon of an app already on the home screen.
 - Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.
 - Password-reset emails open in Safari, not the home-screen app.
