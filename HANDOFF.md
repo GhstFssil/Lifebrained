@@ -1,4 +1,5 @@
 # Handoff
+Last updated 2026-11-20. Overwrite each time; keep under 40 lines. Change record: HISTORY.md (don't read unless asked).
 
 ## Goal
 Lifebrained: one phone-first place for to dos, money and calendar, synced per person through Supabase accounts. Never assume for Ricky (bills paid / income received only when he confirms).
@@ -6,7 +7,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 ## Done
 - Shipped 0.1 to 0.5 (0.4 = Supabase accounts, sync, cloud backups; 0.5 = edit events, money entries, regular events).
 - Repo GhstFssil/Lifebrained created (private); 0.4 imported to `main` (commit e7a2b4c). Tag `v0.4` could not be pushed (403); create it on GitHub as a release or tag.
-- CLAUDE.md, ARCHITECTURE.md, BACKLOG.md added.
+- 2026-11-20: docs aligned with the other Ricky repos (common CLAUDE.md sections, HISTORY.md started, unified Supabase setup wording in README).
 
 ## In progress
 - Nothing.
@@ -28,3 +29,4 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - iPhone never updates the icon of an app already on the home screen.
 - Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.
 - Password-reset emails open in Safari, not the home-screen app.
+- `vendor/591.supabase.js` is a lazy chunk loaded by `supabase.js`, not dead code: keep it.
