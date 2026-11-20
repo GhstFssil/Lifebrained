@@ -28,7 +28,9 @@ Don't edit this file without Ricky's approval. Keep it under ~25 lines of rules.
 - Only the publishable Supabase key may go in `config.js`. Never the secret/service_role key.
 
 ## Shipping
-- Ship only when asked. Release = bump `APP_VERSION` (app.js), `CACHE` (sw.js), tag `vX.Y`; then bump the working copy to the next version.
+- Ship only when asked. Tag releases `vX.Y`.
+- By default, every push to `main` that isn't docs-only bumps `APP_VERSION` (app.js) to the next version (0.5 -> 0.6) and `CACHE` (sw.js) with it, in that same push, unless Ricky says otherwise.
+- Docs-only pushes (only `.md` files) never change the version unless Ricky explicitly says so.
 
 ## Rules maintenance
 - After each release (or on request), suggest changes in one short list: rules to add (friction seen), trim (redundant/outdated/something you'd do anyway), and wording to tighten.

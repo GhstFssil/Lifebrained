@@ -14,7 +14,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 
 ## Decisions
 - Repo is private. Supabase "Confirm email" is off. Initial import went straight to `main`.
-- Ship (bump version, tag) only when Ricky asks.
+- Ship (tag, Publish deploy) only when Ricky asks. Every push to `main` except a docs-only one bumps `APP_VERSION` and `CACHE` (CLAUDE.md, Shipping).
 - Netlify auto publishing is stopped: pushes to `main` build but go live only when Ricky presses Publish deploy. May move to a `release` production branch later.
 
 ## Next steps
@@ -25,7 +25,6 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 
 ## Gotchas
 - Real Supabase sign-in, sync and backup restore verified; the two-device conflict prompt is untested.
-- Version is 0.5; bump `APP_VERSION` and `CACHE` on the next release.
 - iPhone never updates the icon of an app already on the home screen.
 - Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.
 - Password-reset emails open in Safari, not the home-screen app.
