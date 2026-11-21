@@ -9,3 +9,4 @@ Add a line with `echo '- ...' >> HISTORY.md`.
 - 2026-11-20 17:08 | main | ARCHITECTURE.md: Sync section renamed Backend (Supabase), added Run and test and Docs sections; README.md: unified Supabase setup, Updating and Files wording (same layout as BSH-Companion)
 - 2026-11-20 17:46 | main | README: removed the version and cache values (they live in app.js and sw.js); CLAUDE.md and HANDOFF no longer point at README version lines
 - 2026-11-20 17:59 | main | Version rules: by default every push to main that isn't docs-only bumps APP_VERSION and CACHE to the next version (0.5 -> 0.6), docs-only pushes never change the version unless Ricky says so (CLAUDE.md, README, HANDOFF); the old 'bump the working copy to the next version after release' step is gone
+- 2026-11-20 18:02 | main | Version rule: Lifebrained now uses whole numbers, starting at 1 on the next non-docs push to main (0.5 -> 1, cache lifebrained-v0.5 -> lifebrained-v1); tags are vN (CLAUDE.md, HANDOFF)

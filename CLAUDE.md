@@ -28,8 +28,8 @@ Don't edit this file without Ricky's approval. Keep it under ~25 lines of rules.
 - Only the publishable Supabase key may go in `config.js`. Never the secret/service_role key.
 
 ## Shipping
-- Ship only when asked. Tag releases `vX.Y`.
-- By default, every push to `main` that isn't docs-only bumps `APP_VERSION` (app.js) to the next version (0.5 -> 0.6) and `CACHE` (sw.js) with it, in that same push, unless Ricky says otherwise.
+- Ship only when asked. Tag releases `vN`.
+- By default, every push to `main` that isn't docs-only bumps `APP_VERSION` (app.js) to the next whole number and `CACHE` (sw.js) with it, in that same push, unless Ricky says otherwise. The next such push makes it 1 (0.5 -> 1, `lifebrained-v0.5` -> `lifebrained-v1`), then 2, 3 and so on.
 - Docs-only pushes (only `.md` files) never change the version unless Ricky explicitly says so.
 
 ## Rules maintenance

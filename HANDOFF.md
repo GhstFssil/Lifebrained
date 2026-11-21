@@ -24,6 +24,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 4. New requests go in BACKLOG.md; ship only when asked.
 
 ## Gotchas
+- Versions become whole numbers from the next non-docs push to `main` (0.5 -> 1).
 - Real Supabase sign-in, sync and backup restore verified; the two-device conflict prompt is untested.
 - iPhone never updates the icon of an app already on the home screen.
 - Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.
