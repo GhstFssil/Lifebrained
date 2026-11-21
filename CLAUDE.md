@@ -28,9 +28,9 @@ Don't edit this file without Ricky's approval. Keep it under ~25 lines of rules.
 - Only the publishable Supabase key may go in `config.js`. Never the secret/service_role key.
 
 ## Shipping
-- Ship only when asked. Ship/publish means pushing to `main` as the next version (if applicable); `.github/workflows/release.yml` makes the `vN` release (tag, zip, SQL) from that push; never push tags yourself. Ricky handles Netlify himself. Never give Ricky zips or artifacts unless he asks.
+- Interactive work goes on `next`; agents never work on `main`. Publish only when Ricky says so: merge `main` into `next`, bump the version (unless docs-only), then push `next` to `main`. `.github/workflows/release.yml` makes the `vN` release (tag, zip, SQL) from that push; never push tags yourself. Ricky handles Netlify himself. Never give Ricky zips or artifacts unless he asks.
 - By default, every push to `main` that isn't docs-only bumps `APP_VERSION` (app.js) to the next whole number and `CACHE` (sw.js) with it, in that same push, unless Ricky says otherwise. The next such push makes it 1 (0.5 -> 1, `lifebrained-v0.5` -> `lifebrained-v1`), then 2, 3 and so on.
-- Docs-only pushes (only `.md` files) never change the version unless Ricky explicitly says so.
+- Docs-only pushes (only `.md` files) never change the version unless Ricky explicitly says so. They go straight to `main` by default, then merge `main` into `next`.
 
 ## Rules maintenance
 - After each release (or on request), suggest changes in one short list: rules to add (friction seen), trim (redundant/outdated/something you'd do anyway), and wording to tighten.

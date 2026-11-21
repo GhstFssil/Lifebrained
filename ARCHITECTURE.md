@@ -25,7 +25,7 @@
 - Only the publishable key belongs in the repo.
 
 ## Deploy
-Netlify builds the repo root from `main` (no build command). Auto publishing is off: a push goes live only when Ricky presses Publish deploy. `.github/workflows/release.yml` also publishes a `vN` release (N = `APP_VERSION`) with the app zip and `supabase-setup.sql` on every non-docs push to `main`; docs-only pushes make none. Release steps are in CLAUDE.md.
+Netlify builds the repo root from `main` (no build command). Auto publishing is off: a push goes live only when Ricky presses Publish deploy. `.github/workflows/release.yml` also publishes a `vN` release (N = `APP_VERSION`) with the app zip and `supabase-setup.sql` on every non-docs push to `main`; docs-only pushes make none. Branches: `next` (all agent work), `main` (published versions). Release steps are in CLAUDE.md.
 
 ## Run and test
 No test folder. After a change, run the quick targeted check in CLAUDE.md (headless Chromium at 390px). Sync is tested only against a mock Supabase server.

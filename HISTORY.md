@@ -13,3 +13,4 @@ Add a line with `echo '- ...' >> HISTORY.md`.
 - 2026-11-20 20:41 | main | v1: collapsible User guide in Settings (guideHTML in app.js, styles in style.css); APP_VERSION 0.5 -> 1, CACHE lifebrained-v1
 - 2026-11-20 21:39 | main | Docs: shipping means pushing to main as the next version; never give zips or artifacts unless asked
 - 2026-11-20 21:48 | main | Added .github/workflows/release.yml: every non-docs push to main publishes a vN GitHub release (app zip plus SQL script); docs updated
+- 2026-11-20 22:06 | main | Docs: all work goes on next; publish merges main into next, bumps the version if not docs-only, then pushes next to main
