@@ -1,0 +1,52 @@
+# Publishes a GitHub release for every app change pushed to main: tag vN (N = APP_VERSION in app.js), the app zip, and supabase-setup.sql.
+# A push that only changes docs, tests or tools makes no release. A new push with the same version replaces that release's files.
+# Ricky downloads the zip from the Releases page and uploads it to Netlify himself. Run it by hand from the Actions tab to rebuild the current release.
+name: Release
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'tests/**', 'tools/**', '.gitignore', '.gitattributes']
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build the app zip
+        id: build
+        run: |
+          VER=$(sed -nE "s/.*APP_VERSION *= *'([^']+)'.*/\1/p" app.js | head -1)
+          test -n "$VER" || { echo "APP_VERSION not found in app.js"; exit 1; }
+          mkdir -p "$RUNNER_TEMP/out"
+          git ls-files | grep -v -E '^(tests|tools|supabase|\.github)/|\.md$|\.sql$|^\.git' | zip -q "$RUNNER_TEMP/out/lifebrained-v$VER.zip" -@
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+      - name: Publish to Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VER: ${{ steps.build.outputs.version }}
+        run: |
+          TAG="v$VER"
+          PREV=$(gh release list --limit 1 --json tagName -q '.[0].tagName')
+          {
+            echo "Lifebrained $TAG. Built from commit ${GITHUB_SHA::7}."
+            echo
+            echo "- lifebrained-$TAG.zip: the app, ready to upload to Netlify."
+            echo "- supabase-setup.sql: the database script. Re-run it in the Supabase SQL editor only if the changes below touch the database."
+            echo
+            echo "Changes:"
+            if [ -n "$PREV" ] && [ "$PREV" != "$TAG" ] && git rev-parse -q --verify "refs/tags/$PREV" > /dev/null; then
+              git log --no-merges --format='- %s' "$PREV..HEAD"
+            else
+              git log --no-merges --format='- %s' -n 10
+            fi
+          } > "$RUNNER_TEMP/notes.md"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release edit "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "Lifebrained $TAG" --notes-file "$RUNNER_TEMP/notes.md"
+          fi
+          gh release upload "$TAG" "$RUNNER_TEMP"/out/*.zip supabase-setup.sql --clobber
