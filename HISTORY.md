@@ -11,3 +11,4 @@ Add a line with `echo '- ...' >> HISTORY.md`.
 - 2026-11-20 17:59 | main | Version rules: by default every push to main that isn't docs-only bumps APP_VERSION and CACHE to the next version (0.5 -> 0.6), docs-only pushes never change the version unless Ricky says so (CLAUDE.md, README, HANDOFF); the old 'bump the working copy to the next version after release' step is gone
 - 2026-11-20 18:02 | main | Version rule: Lifebrained now uses whole numbers, starting at 1 on the next non-docs push to main (0.5 -> 1, cache lifebrained-v0.5 -> lifebrained-v1); tags are vN (CLAUDE.md, HANDOFF)
 - 2026-11-20 20:41 | main | v1: collapsible User guide in Settings (guideHTML in app.js, styles in style.css); APP_VERSION 0.5 -> 1, CACHE lifebrained-v1
+- 2026-11-20 21:39 | main | Docs: shipping means pushing to main as the next version; never give zips or artifacts unless asked
