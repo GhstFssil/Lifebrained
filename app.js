@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 var DEFAULT_CATS=[['Food',400],['Transport',120],['School',150],['Fun',100],['Health',60],['Bills',0],['Other',100]];
-var APP_VERSION='0.5';
+var APP_VERSION='1';
 var LS='life-app-state-v1', LSTAB='life-app-tab', LSUI='lifebrained-ui';
 var MIGRATED=false;
 var DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1320,6 +1320,18 @@ function pastNames(){
   return out.sort(function(a,b){return a.localeCompare(b)});
 }
 function lastTaskNamed(name){var k=nkey(name);return state.tasks.filter(function(x){return nkey(x.title)===k}).sort(function(a,b){return (a.doneAt||'')<(b.doneAt||'')?-1:1}).pop()||null}
+function guideHTML(){
+  var g=[
+    ['Getting around','<p>Four tabs run along the bottom: Today, To do, Money and Calendar. The + button adds something to the tab you are on. Settings is at the top right.</p><p>The app works offline. Your data lives on this device unless you sign in to sync it.</p>'],
+    ['Today','<p>A plan for the day built from your to dos and your regular schedule. Start, pause and finish a timer on a task. Lifebrained learns how long a task usually takes from your timed history. You can change your day start and end times and your breaks.</p>'],
+    ['To do','<p>Add tasks with a due date and an estimate in minutes. Break a task into sub-tasks, give it a category or project, filter the list, select several at once, and drag to reorder.</p>'],
+    ['Money','<p><b>Accounts:</b> a balance is what you set it to, plus everything you log after that. Log income, expenses and transfers as they happen.</p><p><b>Bills:</b> unpaid bills count toward your planned total until you mark them paid. <b>Expected income:</b> you confirm each paycheck when it arrives; nothing is assumed.</p><p><b>Planned purchases</b> do not count as spending until you mark them spent. <b>Debts:</b> payments you log lower the debt and count as spending. <b>Goals</b> track money you set aside or an account balance.</p>'],
+    ['Calendar','<p>Add events and tap one to edit it. Use the regular schedule for things that repeat every week, like work or class.</p>'],
+    ['Settings','<p><b>Account:</b> sign in to sync between devices and keep cloud backups. <b>Categories</b> are shared by to dos and money and can have a monthly budget. <b>Projects</b> group to dos and spending, with sub-projects. <b>Backup file:</b> save one now and then somewhere safe, and restore from it if you lose data.</p>'],
+    ['Tips','<p>Undo shows briefly after a change. After an update, open the app online once so it refreshes. On iPhone, password-reset emails open in Safari, not the home-screen app.</p>']
+  ];
+  return '<div class="oblk guide"><h4>User guide</h4>'+g.map(function(x){return '<details><summary>'+esc(x[0])+'</summary><div class="gbody">'+x[1]+'</div></details>'}).join('')+'</div>';
+}
 function organizeHTML(){
   var h='<h3>Settings</h3>'+accountHTML();
   var cr=catsSorted().map(function(c){
@@ -1340,6 +1352,7 @@ function organizeHTML(){
     '<p class="sub bkl">'+(le?'Last backup saved '+esc(relPast(le)):'No backup saved yet')+'</p>'+
     '<div class="tctl"><button type="button" class="tb" data-act="exportData">Save backup</button><button type="button" class="tb" data-act="importData">Restore from backup</button></div>'+
     '<input type="file" id="f-import" accept=".json,application/json" hidden><p class="err" id="bk-err" role="alert"></p></div>';
+  h+=guideHTML();
   return h+'<div class="btns"><button type="button" class="btn" data-act="closeAll">Done</button></div><p class="sub ver">Lifebrained '+APP_VERSION+'</p>';
 }
 function accountHTML(){

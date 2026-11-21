@@ -1,5 +1,5 @@
 # Handoff
-Last updated 2026-11-20. Overwrite each time; keep under 40 lines. Change record: HISTORY.md (don't read unless asked).
+Last updated 2026-11-20 (evening). Overwrite each time; keep under 40 lines. Change record: HISTORY.md (don't read unless asked).
 
 ## Goal
 Lifebrained: one phone-first place for to dos, money and calendar, synced per person through Supabase accounts. Never assume for Ricky (bills paid / income received only when he confirms).
@@ -8,6 +8,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - Shipped 0.1 to 0.5 (0.4 = Supabase accounts, sync, cloud backups; 0.5 = edit events, money entries, regular events).
 - Repo GhstFssil/Lifebrained created (private); 0.4 imported to `main` (commit e7a2b4c). Tag `v0.4` could not be pushed (403); create it on GitHub as a release or tag.
 - 2026-11-20: docs aligned with the other Ricky repos (common CLAUDE.md sections, HISTORY.md started, unified Supabase setup wording in README).
+- 2026-11-20: User guide added to Settings (collapsible sections, `guideHTML()` in app.js); version 1 pushed to `main` (not tagged, not published). Guide wording is a first draft; Ricky will send edits.
 
 ## In progress
 - Nothing.
@@ -24,7 +25,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 4. New requests go in BACKLOG.md; ship only when asked.
 
 ## Gotchas
-- Versions become whole numbers from the next non-docs push to `main` (0.5 -> 1).
+- Version is now 1; the next non-docs push to `main` makes it 2.
 - Real Supabase sign-in, sync and backup restore verified; the two-device conflict prompt is untested.
 - iPhone never updates the icon of an app already on the home screen.
 - Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.
