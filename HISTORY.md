@@ -18,3 +18,4 @@ Add a line with `echo '- ...' >> HISTORY.md`.
 - 2026-11-23 17:37 | next | Plans Look ahead: separate "Expected income in window" line (planWindow incN/incTotal), not in planned total
 - 2026-11-23 17:37 | next | Schedule: back-to-back subtasks of a supertask merge into one block, subtasks listed when selected (mergeSupers, .subs CSS)
 - 2026-11-23 17:37 | next | BACKLOG cleared (two ideas done, two watch items removed at Ricky's request); HANDOFF updated
+- 2026-11-23 17:39 | v2 | Published: APP_VERSION 2, CACHE lifebrained-v2; next pushed to main

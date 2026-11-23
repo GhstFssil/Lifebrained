@@ -10,7 +10,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - 2026-11-20: docs aligned with the other Ricky repos (common CLAUDE.md sections, HISTORY.md started, unified Supabase setup wording in README).
 - 2026-11-20: User guide added to Settings (collapsible sections, `guideHTML()` in app.js); version 1 pushed to `main` (not tagged, not published). Guide wording is a first draft; Ricky will send edits.
 
-- 2026-11-23: on `next` (not pushed to `main`, no version bump yet): Plans Look ahead shows "Expected income in window" (from today to window end, unconfirmed only, never in the planned total); the schedule shows each supertask's back-to-back subtasks as one block, subtasks listed when tapped (an event splits it). BACKLOG cleared, watch items removed at Ricky's request.
+- 2026-11-23: published as version 2 (`next` pushed to `main`): Plans Look ahead shows "Expected income in window" (from today to window end, unconfirmed only, never in the planned total); the schedule shows each supertask's back-to-back subtasks as one block, subtasks listed when tapped (an event splits it). BACKLOG cleared, watch items removed at Ricky's request.
 
 ## In progress
 - Nothing.
@@ -22,11 +22,11 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 
 ## Next steps
 1. Ricky: open the app once online so the 0.5 service worker installs; check the LB icon and an edit on each of events, money, regular events.
-2. Review the two changes on `next`; say when to publish (merge `main` into `next`, bump to 2, push to `main`).
+2. Ricky: press Publish deploy on Netlify, then check Look ahead income and a supertask block on the phone.
 3. New requests go in BACKLOG.md; ship only when asked.
 
 ## Gotchas
-- Version is now 1; the next non-docs push to `main` makes it 2.
+- Version is now 2; the next non-docs push to `main` makes it 3.
 - Real Supabase sign-in, sync and backup restore verified; the two-device conflict prompt is untested (no longer tracked in BACKLOG).
 - iPhone never updates the icon of an app already on the home screen.
 - Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.
