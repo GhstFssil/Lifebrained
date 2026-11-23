@@ -6,6 +6,7 @@ Format: `- [ ] (who, YYYY-MM-DD) short description; where/how to reproduce`
 _none logged yet_
 
 ## Ideas
+- [ ] (ricky, 2026-11-23) Look ahead on Plans should also show expected income inside the window, as its own line (e.g. "Expected income in window"), without changing the existing planned total or counting income as received. Today `planWindow()` only sums unpaid bills and planned purchases; expected income shows only on the Money overview, for this month.
 - [ ] Supertasks show as one block in the schedule, with each subtask detailed in the popup when it's selected.
 
 ## Watch (untested)
