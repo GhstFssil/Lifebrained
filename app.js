@@ -495,7 +495,10 @@ function planWindow(){
   var end=winEnd(),bl=billOccTo(end),pl=state.planned.filter(function(p){return p.date&&p.date<=end});
   var bt=r2(bl.reduce(function(s,o){return s+o.bill.amount},0)),pt=r2(pl.reduce(function(s,p){return s+p.amount},0));
   var undated=r2(state.planned.reduce(function(s,p){return s+(p.date?0:p.amount)},0));
-  return {end:end,bills:bl,planned:pl,billsTotal:bt,plannedTotal:pt,total:r2(bt+pt),undated:undated};
+  /* expected income from today to the window end; shown on its own, never part of total */
+  var t0=todayStr(),inN=0,inT=0;
+  state.incomes.forEach(function(inc){incDates(inc,t0>inc.from?t0:inc.from,end).forEach(function(d){if(!inc.received[d]){inN++;inT+=incTotal(inc)}})});
+  return {end:end,bills:bl,planned:pl,billsTotal:bt,plannedTotal:pt,total:r2(bt+pt),undated:undated,incN:inN,incTotal:r2(inT)};
 }
 function plannedAll(){return r2(state.planned.reduce(function(s,p){return s+p.amount},0))}
 
@@ -735,7 +738,8 @@ function planDay(ds){
       var free=nxt-cursor;
       if(every&&since>=every-1e-6){var bl=Math.min(blen,free);blocks.push({type:'break',title:'Break',start:cursor,end:cursor+bl});cursor+=bl;breakTotal+=bl;since=0;continue}
       var chunk=Math.min(every?Math.min(need,every-since):need,free);
-      blocks.push({type:'task',title:t.title,start:cursor,end:cursor+chunk,over:cursor+chunk>end+1e-6});
+      var pt=parentOf(t);
+      blocks.push({type:'task',title:t.title,start:cursor,end:cursor+chunk,over:cursor+chunk>end+1e-6,pid:pt?pt.id:'',ptitle:pt?pt.title:''});
       cursor+=chunk;need-=chunk;since+=chunk;
     }
     res[t.id]={end:cursor,overflow:cursor>end+1e-6};last=res[t.id];
@@ -755,6 +759,30 @@ function planCard(){
   return h+'</div></section>';
 }
 function hourLabel(m){var h=Math.floor(m/60)%24;return (h%12||12)+' '+(h<12?'AM':'PM')}
+/* subtasks of one supertask that run back to back (breaks between them included) become one block;
+   an event in between splits it. b.subs lists the parts for the expanded view. */
+function mergeSupers(bl){
+  bl=bl.slice().sort(function(a,b){return a.start-b.start||a.end-b.end});
+  var out=[],i=0;
+  while(i<bl.length){
+    var b=bl[i];
+    if(b.type!=='task'||!b.pid){out.push(b);i++;continue}
+    var run={type:'task',title:b.ptitle,start:b.start,end:b.end,over:b.over,seg:'',col:0,ncols:1,pid:b.pid,subs:[{t:b.title,s:b.start,e:b.end}]};
+    var j=i+1;
+    while(j<bl.length){
+      var n=bl[j],n2=bl[j+1];
+      if(n.type==='task'&&n.pid===b.pid&&n.start===run.end){
+        var ls=run.subs[run.subs.length-1];
+        if(ls.t===n.title&&!ls.br)ls.e=n.end;else run.subs.push({t:n.title,s:n.start,e:n.end});
+        run.end=n.end;run.over=run.over||n.over;j++;
+      }else if(n.type==='break'&&n.start===run.end&&n2&&n2.type==='task'&&n2.pid===b.pid&&n2.start===n.end){
+        run.subs.push({t:'Break',s:n.start,e:n.end,br:true});run.end=n.end;j++;
+      }else break;
+    }
+    out.push(run);i=j;
+  }
+  return out;
+}
 function timelineHTML(p,ds){
   var PPH=80,OFF=12;
   var allDay=dayItems(ds).filter(function(x){return x.allDay&&!x.skipped});
@@ -763,8 +791,9 @@ function timelineHTML(p,ds){
   p.blocks.forEach(function(b){
     var s=b.start,e=b.end;
     if(b.seg){s=Math.max(s,p.start);e=Math.min(e,p.end)}   /* multi-day events: show only the part inside the day's hours */
-    if(e>s)blocks.push({type:b.type,title:b.title,start:s,end:e,over:b.over,seg:b.seg||'',col:0,ncols:1});
+    if(e>s)blocks.push({type:b.type,title:b.title,start:s,end:e,over:b.over,seg:b.seg||'',col:0,ncols:1,pid:b.pid||'',ptitle:b.ptitle||''});
   });
+  blocks=mergeSupers(blocks);
   if(!blocks.length)return head+'<div class="list"><p class="empty">Nothing scheduled and no tasks due.</p></div>';
   var lo=p.start,hi=p.end;
   blocks.forEach(function(b){lo=Math.min(lo,b.start);hi=Math.max(hi,b.end)});
@@ -800,7 +829,13 @@ function timelineHTML(p,ds){
     }
     var ht=Math.max(16,real-2),mode=ht>=58?'two':ht>=34?'stack':ht>=22?'one':'tiny';
     var cls=b.type==='event'?'ev':(b.over?'ov':'tk');
-    h+='<button type="button" class="tbk '+cls+' '+mode+'" data-act="tlsel" aria-label="'+esc(b.title+', '+range)+'" style="--h:'+ht+'px;top:'+y(b.start)+'px;height:'+ht+'px;left:calc('+(b.col/b.ncols*100)+'% + 1px);width:calc('+(100/b.ncols)+'% - 3px)"><b>'+esc(b.title)+'</b><span class="t1">'+esc(b.seg?range:fmtMinClock(b.start))+'</span><span class="t2">'+esc(range)+'</span></button>';
+    var subs='',subLbl='';
+    if(b.subs){
+      var real2=b.subs.filter(function(x){return !x.br}).length;
+      subLbl=', '+real2+(real2===1?' subtask':' subtasks');
+      subs='<span class="subs">'+b.subs.map(function(x){return '<span class="sb'+(x.br?' br':'')+'">'+esc(x.t)+' · '+esc(fmtMinClock(x.s)+' – '+fmtMinClock(x.e))+'</span>'}).join('')+'</span>';
+    }
+    h+='<button type="button" class="tbk '+cls+' '+mode+'" data-act="tlsel" aria-label="'+esc(b.title+', '+range+subLbl)+'" style="--h:'+ht+'px;top:'+y(b.start)+'px;height:'+ht+'px;left:calc('+(b.col/b.ncols*100)+'% + 1px);width:calc('+(100/b.ncols)+'% - 3px)"><b>'+esc(b.title)+'</b><span class="t1">'+esc(b.seg?range:fmtMinClock(b.start))+'</span><span class="t2">'+esc(range)+'</span>'+subs+'</button>';
   });
   h+='</div>';
   var today=ds===todayStr();
@@ -1182,7 +1217,7 @@ function goalRow(g){
 function moneyPlans(){
   var ym=monthKey(),pw=planWindow(),w=state.settings.planWin;
   var h='<div class="sum"><div class="sub">Planned through '+esc(dateY(pw.end))+'</div><div class="big num">'+money(pw.total)+'</div>'+
-    '<dl class="kvs">'+kv('Unpaid bills ('+pw.bills.length+')',money(pw.billsTotal))+kv('Planned purchases ('+pw.planned.length+')',money(pw.plannedTotal))+kv('Accounts after planned',money(totalBalance()-pw.total),totalBalance()-pw.total<0?'warn':'')+'</dl>'+
+    '<dl class="kvs">'+kv('Unpaid bills ('+pw.bills.length+')',money(pw.billsTotal))+kv('Planned purchases ('+pw.planned.length+')',money(pw.plannedTotal))+(pw.incN?kv('Expected income in window ('+pw.incN+')',money(pw.incTotal)):'')+kv('Accounts after planned',money(totalBalance()-pw.total),totalBalance()-pw.total<0?'warn':'')+'</dl>'+
     '<div class="winctl"><span class="sub">Look ahead</span>'+
       (w.unit==='date'?'<input id="f-wind" type="date" aria-label="Plan until" value="'+esc(w.date||winEnd())+'">':'<input id="f-winn" type="number" inputmode="numeric" min="1" max="99" aria-label="How many" value="'+esc(String(w.n||1))+'">')+
       '<select id="f-winu" aria-label="Unit">'+WINU.map(function(x){return opt(x[0],x[1],w.unit)}).join('')+'</select></div></div>';

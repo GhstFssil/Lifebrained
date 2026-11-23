@@ -15,3 +15,6 @@ Add a line with `echo '- ...' >> HISTORY.md`.
 - 2026-11-20 21:48 | main | Added .github/workflows/release.yml: every non-docs push to main publishes a vN GitHub release (app zip plus SQL script); docs updated
 - 2026-11-20 22:06 | main | Docs: all work goes on next; publish merges main into next, bumps the version if not docs-only, then pushes next to main
 - 2026-11-23 17:26 | main (docs only) | BACKLOG: idea to show expected income in the Look ahead window
+- 2026-11-23 17:37 | next | Plans Look ahead: separate "Expected income in window" line (planWindow incN/incTotal), not in planned total
+- 2026-11-23 17:37 | next | Schedule: back-to-back subtasks of a supertask merge into one block, subtasks listed when selected (mergeSupers, .subs CSS)
+- 2026-11-23 17:37 | next | BACKLOG cleared (two ideas done, two watch items removed at Ricky's request); HANDOFF updated

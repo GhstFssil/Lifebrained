@@ -298,6 +298,10 @@ body{margin:0;padding:0}
 .tbk.sel b{white-space:normal;display:block;-webkit-line-clamp:unset;overflow:visible}
 .tbk.sel .t1{display:none}
 .tbk.sel .t2{display:block;white-space:normal}
+.tbk .subs{display:none}
+.tbk.sel .subs{display:block;white-space:normal;margin-top:4px;padding-top:4px;border-top:1px solid currentColor;opacity:1}
+.tbk .subs .sb{display:block;white-space:normal;font-size:12px;line-height:1.35;padding:1px 0}
+.tbk .subs .sb.br{opacity:.75;font-style:italic}
 .chk.pend{background:var(--accent);border-color:var(--accent)}
 .chk.pend::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid var(--on-accent);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
 .row.pending>.grow,.stli.pending>.row>.grow{opacity:.45;transition:opacity 1s linear}
