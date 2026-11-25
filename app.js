@@ -1163,7 +1163,8 @@ function moneyOverview(){
       kv('Planned through '+dateY(pw.end),money(pw.total))+
       kv(' Unpaid bills',money(pw.billsTotal),'subkv')+
       kv(' Planned purchases',money(pw.plannedTotal),'subkv')+
-      kv('Accounts after planned',money(tb-pw.total),tb-pw.total<0?'warn':'')+
+      (pw.incN?kv('Expected income in window ('+pw.incN+')',money(pw.incTotal)):'')+
+      kv('Accounts after planned',money(tb-pw.total+pw.incTotal),tb-pw.total+pw.incTotal<0?'warn':'')+
       (pw.undated?kv('Planned with no date',money(pw.undated)):'')+
       (exp>0?kv('Expected income, not yet confirmed',money(exp)):'')+
     '</dl>'+

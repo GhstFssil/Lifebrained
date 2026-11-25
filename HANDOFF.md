@@ -13,7 +13,7 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - 2026-11-23: published as version 2 (`next` pushed to `main`): Plans Look ahead shows "Expected income in window" (from today to window end, unconfirmed only, never in the planned total; from 2026-11-25 added to Plans "Accounts after planned"); the schedule shows each supertask's back-to-back subtasks as one block, subtasks listed when tapped (an event splits it). BACKLOG cleared, watch items removed at Ricky's request.
 
 ## In progress
-- On `next`, not yet on `main`: Plans "Accounts after planned" now adds expected income in the window (Ricky asked 2026-11-25). Headline "Planned through" still counts only bills + purchases. Overview tab's "Accounts after planned" unchanged.
+- On `next`, not yet on `main`: Plans "Accounts after planned" now adds expected income in the window (Ricky asked 2026-11-25). Headline "Planned through" still counts only bills + purchases. Overview tab now matches (also shows an "Expected income in window" line).
 
 ## Decisions
 - Repo is private. Supabase "Confirm email" is off. Initial import went straight to `main`.
