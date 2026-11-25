@@ -495,7 +495,7 @@ function planWindow(){
   var end=winEnd(),bl=billOccTo(end),pl=state.planned.filter(function(p){return p.date&&p.date<=end});
   var bt=r2(bl.reduce(function(s,o){return s+o.bill.amount},0)),pt=r2(pl.reduce(function(s,p){return s+p.amount},0));
   var undated=r2(state.planned.reduce(function(s,p){return s+(p.date?0:p.amount)},0));
-  /* expected income from today to the window end; shown on its own, never part of total */
+  /* expected income from today to the window end; not part of total, but added to "Accounts after planned" on Plans */
   var t0=todayStr(),inN=0,inT=0;
   state.incomes.forEach(function(inc){incDates(inc,t0>inc.from?t0:inc.from,end).forEach(function(d){if(!inc.received[d]){inN++;inT+=incTotal(inc)}})});
   return {end:end,bills:bl,planned:pl,billsTotal:bt,plannedTotal:pt,total:r2(bt+pt),undated:undated,incN:inN,incTotal:r2(inT)};
@@ -1217,7 +1217,7 @@ function goalRow(g){
 function moneyPlans(){
   var ym=monthKey(),pw=planWindow(),w=state.settings.planWin;
   var h='<div class="sum"><div class="sub">Planned through '+esc(dateY(pw.end))+'</div><div class="big num">'+money(pw.total)+'</div>'+
-    '<dl class="kvs">'+kv('Unpaid bills ('+pw.bills.length+')',money(pw.billsTotal))+kv('Planned purchases ('+pw.planned.length+')',money(pw.plannedTotal))+(pw.incN?kv('Expected income in window ('+pw.incN+')',money(pw.incTotal)):'')+kv('Accounts after planned',money(totalBalance()-pw.total),totalBalance()-pw.total<0?'warn':'')+'</dl>'+
+    '<dl class="kvs">'+kv('Unpaid bills ('+pw.bills.length+')',money(pw.billsTotal))+kv('Planned purchases ('+pw.planned.length+')',money(pw.plannedTotal))+(pw.incN?kv('Expected income in window ('+pw.incN+')',money(pw.incTotal)):'')+kv('Accounts after planned',money(totalBalance()-pw.total+pw.incTotal),totalBalance()-pw.total+pw.incTotal<0?'warn':'')+'</dl>'+
     '<div class="winctl"><span class="sub">Look ahead</span>'+
       (w.unit==='date'?'<input id="f-wind" type="date" aria-label="Plan until" value="'+esc(w.date||winEnd())+'">':'<input id="f-winn" type="number" inputmode="numeric" min="1" max="99" aria-label="How many" value="'+esc(String(w.n||1))+'">')+
       '<select id="f-winu" aria-label="Unit">'+WINU.map(function(x){return opt(x[0],x[1],w.unit)}).join('')+'</select></div></div>';
