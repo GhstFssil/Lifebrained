@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 var DEFAULT_CATS=[['Food',400],['Transport',120],['School',150],['Fun',100],['Health',60],['Bills',0],['Other',100]];
-var APP_VERSION='2';
+var APP_VERSION='3';
 var LS='life-app-state-v1', LSTAB='life-app-tab', LSUI='lifebrained-ui';
 var MIGRATED=false;
 var DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];

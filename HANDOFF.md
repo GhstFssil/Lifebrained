@@ -1,5 +1,5 @@
 # Handoff
-Last updated 2026-11-25. Overwrite each time; keep under 40 lines. Change record: HISTORY.md (don't read unless asked).
+Last updated 2026-11-25 (evening). Overwrite each time; keep under 40 lines. Change record: HISTORY.md (don't read unless asked).
 
 ## Goal
 Lifebrained: one phone-first place for to dos, money and calendar, synced per person through Supabase accounts. Never assume for Ricky (bills paid / income received only when he confirms).
@@ -11,9 +11,10 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 - 2026-11-20: User guide added to Settings (collapsible sections, `guideHTML()` in app.js); version 1 pushed to `main` (not tagged, not published). Guide wording is a first draft; Ricky will send edits.
 
 - 2026-11-23: published as version 2 (`next` pushed to `main`): Plans Look ahead shows "Expected income in window" (from today to window end, unconfirmed only, never in the planned total; from 2026-11-25 added to Plans "Accounts after planned"); the schedule shows each supertask's back-to-back subtasks as one block, subtasks listed when tapped (an event splits it). BACKLOG cleared, watch items removed at Ricky's request.
+- 2026-11-25: published as version 3: "Accounts after planned" (Plans and Overview) adds expected income in the window; Overview also shows an "Expected income in window" line. Headline "Planned through" still bills + purchases only.
 
 ## In progress
-- On `next`, not yet on `main`: Plans "Accounts after planned" now adds expected income in the window (Ricky asked 2026-11-25). Headline "Planned through" still counts only bills + purchases. Overview tab now matches (also shows an "Expected income in window" line).
+- Nothing.
 
 ## Decisions
 - Repo is private. Supabase "Confirm email" is off. Initial import went straight to `main`.
@@ -22,11 +23,11 @@ Lifebrained: one phone-first place for to dos, money and calendar, synced per pe
 
 ## Next steps
 1. Ricky: open the app once online so the 0.5 service worker installs; check the LB icon and an edit on each of events, money, regular events.
-2. Ricky: press Publish deploy on Netlify, then check Look ahead income and a supertask block on the phone.
+2. Ricky: press Publish deploy on Netlify for v3, then check "Accounts after planned" on Plans and Overview.
 3. New requests go in BACKLOG.md; ship only when asked.
 
 ## Gotchas
-- Version is now 2; the next non-docs push to `main` makes it 3.
+- Version is now 3; the next non-docs push to `main` makes it 4.
 - Real Supabase sign-in, sync and backup restore verified; the two-device conflict prompt is untested (no longer tracked in BACKLOG).
 - iPhone never updates the icon of an app already on the home screen.
 - Netlify team protection blocked the icon fetch (iPhone kept the old icon); site is now public. Check Visitor access if assets ever 302 to a Netlify login.

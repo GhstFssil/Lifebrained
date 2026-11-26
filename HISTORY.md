@@ -21,3 +21,4 @@ Add a line with `echo '- ...' >> HISTORY.md`.
 - 2026-11-23 17:39 | v2 | Published: APP_VERSION 2, CACHE lifebrained-v2; next pushed to main
 - 2026-11-25 14:17 | next | Plans: "Accounts after planned" now adds expected income in the window (balance − bills − purchases + expected income)
 - 2026-11-25 14:22 | next | Overview: "Accounts after planned" adds expected income in the window, with an "Expected income in window" line above it (matches Plans)
+- 2026-11-25 18:34 | v3 | Published version 3: expected income in window added to "Accounts after planned" on Plans and Overview
